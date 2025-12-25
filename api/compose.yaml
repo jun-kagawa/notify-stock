@@ -21,6 +21,9 @@ services:
       - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
       - OAUTH_REDIRECT_URL=${OAUTH_REDIRECT_URL}
       - LOG_LEVEL=${LOG_LEVEL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - MAIL_GUN_API_KEY=${MAIL_GUN_API_KEY}
+      - MAIL_DOMAIN=${MAIL_DOMAIN}
     working_dir: /app
     command: ["server"]
     ports:
