@@ -1,3 +1,5 @@
+CREATE DATABASE "notify-stock-test";
+
 CREATE TABLE IF NOT EXISTS
     stocks (
         symbol TEXT,

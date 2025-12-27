@@ -1,0 +1,87 @@
+volumes:
+  pgdata:
+
+networks:
+  secure:
+    internal: true
+
+services:
+  notify:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - FROM=${FROM}
+      - TO=${TO}
+      - MAIL_TOKEN=${MAIL_TOKEN}
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_NAME=${DB_NAME:-notify-stock}
+      - DB_SSLMODE=${DB_SSLMODE:-disable}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_REDIRECT_URL=${OAUTH_REDIRECT_URL}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - MAIL_GUN_API_KEY=${MAIL_GUN_API_KEY}
+      - MAIL_DOMAIN=${MAIL_DOMAIN}
+    working_dir: /app
+    command: ["server"]
+    depends_on:
+      - database
+    networks:
+      - secure
+
+  job:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    environment:
+      - FROM=${FROM}
+      - TO=${TO}
+      - MAIL_TOKEN=${MAIL_TOKEN}
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_NAME=${DB_NAME:-notify-stock}
+      - DB_SSLMODE=${DB_SSLMODE:-disable}
+      - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+      - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+      - OAUTH_REDIRECT_URL=${OAUTH_REDIRECT_URL}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - MAIL_GUN_API_KEY=${MAIL_GUN_API_KEY}
+      - MAIL_DOMAIN=${MAIL_DOMAIN}
+    depends_on:
+      - database
+    networks:
+      - default
+      - secure
+
+  database:
+    image: postgres:17
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=notify-stock
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - secure
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${CLOUD_FLARE_TUNNEL_TOKEN}
+    networks:
+      - secure
+      - default
+    depends_on:
+      - notify
