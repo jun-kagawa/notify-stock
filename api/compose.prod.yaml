@@ -33,6 +33,7 @@ services:
       - database
     networks:
       - secure
+    restart: always
 
   job:
     build:
@@ -74,6 +75,7 @@ services:
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
     networks:
       - secure
+    restart: always
 
   tunnel:
     image: cloudflare/cloudflared:latest
@@ -85,3 +87,4 @@ services:
       - default
     depends_on:
       - notify
+    restart: always
