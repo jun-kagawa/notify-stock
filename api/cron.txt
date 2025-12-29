@@ -22,5 +22,5 @@
 #
 # /usr/local/go/bin/go build -o main cmd/main.go
 # m h  dom mon dow   command
-0 15 * * * cd ~/notify-stock/api && docker compose -f compose.prod.yaml run job stock update
-0 20 * * * cd ~/notify-stock/api && docker compose -f compose.prod.yaml run job notify -s "^N225,^GSPC"
+0 15 * * * cd ~/notify-stock/api && docker compose -f compose.prod.yaml run --rm job stock update
+0 20 * * * cd ~/notify-stock/api && docker compose -f compose.prod.yaml run --rm job notify -s "^N225,^GSPC"
