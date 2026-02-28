@@ -48,6 +48,7 @@ func CORSMiddleware(next http.Handler) http.Handler {
 		"http://localhost:5173",
 		"https://web-server-166226611413.us-west1.run.app",
 		"https://marketwatcher.shop",
+		"https://stock.kj-kj.net",
 	}
 	origins := make(map[string]struct{})
 	for _, origin := range allowedOrigin {
