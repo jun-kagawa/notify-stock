@@ -19,11 +19,8 @@ CREATE TABLE IF NOT EXISTS
         market_price DECIMAL NOT NULL,
         previous_close DECIMAL NOT NULL,
         volume INTEGER,
-        market_cap INTEGER
-    );
-
-ALTER TABLE symbols
-ADD COLUMN currency TEXT;
+        market_cap INTEGER,
+        currency TEXT);
 
 CREATE TABLE IF NOT EXISTS
     sessions (
@@ -31,13 +28,11 @@ CREATE TABLE IF NOT EXISTS
         state TEXT NOT NULL,
         is_active BOOLEAN NOT NULL DEFAULT FALSE,
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-        expires_at TIMESTAMP NOT NULL
+        expires_at TIMESTAMP NOT NULL,
+        member_id UUID
     );
 
-ALTER TABLE sessions ADD COLUMN member_id UUID;
-
-CREATE TABLE IF NOT EXISTS
-    members (id UUID PRIMARY KEY);
+CREATE TABLE IF NOT EXISTS members (id UUID PRIMARY KEY);
 
 CREATE TABLE IF NOT EXISTS
     google_members (
