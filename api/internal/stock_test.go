@@ -24,6 +24,15 @@ func TestSave(t *testing.T) {
 			err:    nil,
 		},
 		{
+			stocks: []notify.Stock{
+				{Symbol: "N225", Timestamp: time.Date(2026, 3, 15, 0, 0, 0, 0, time.UTC)},
+				{Symbol: "N225", Timestamp: time.Date(2026, 3, 15, 0, 0, 0, 0, time.UTC)},
+				{Symbol: "SP500", Timestamp: time.Date(2026, 3, 15, 0, 0, 0, 0, time.UTC)},
+				{Symbol: "SP500", Timestamp: time.Date(2026, 3, 15, 0, 0, 0, 0, time.UTC)},
+			},
+			err: nil,
+		},
+		{
 			stocks: []notify.Stock{},
 			err:    nil,
 		},

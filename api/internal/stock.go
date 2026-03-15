@@ -126,6 +126,27 @@ func CalcAVG[T cmp.Ordered](values []T) (decimal.Decimal, error) {
 	return avg, nil
 }
 
+type Quotes []Stock
+
+func (qs Quotes) Unique() Quotes {
+	m := make(map[string]Quotes)
+	for _, stock := range qs {
+		m[stock.Symbol] = append(m[stock.Symbol], stock)
+	}
+	quotes := make(Quotes, 0, len(qs))
+	for _, stocks := range m {
+		m := make(map[int64]Stock, len(stocks))
+		for _, stock := range stocks {
+			a := stock.Timestamp.Unix()
+			m[a] = stock
+		}
+		for _, stock := range m {
+			quotes = append(quotes, stock)
+		}
+	}
+	return quotes
+}
+
 type StockRepository struct {
 	db *bun.DB
 }
@@ -140,8 +161,9 @@ func (r *StockRepository) Save(ctx context.Context, stocks []Stock) error {
 	if len(stocks) == 0 {
 		return nil
 	}
+	quotes := Quotes(stocks).Unique()
 	_, err := r.db.NewInsert().
-		Model(&stocks).
+		Model(&quotes).
 		On("CONFLICT (symbol, timestamp) DO UPDATE").
 		Set(strings.Join([]string{
 			"open = EXCLUDED.open",
