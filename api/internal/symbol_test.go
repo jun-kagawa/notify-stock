@@ -45,6 +45,11 @@ func TestSymbolDetail(t *testing.T) {
 			decimal.NewFromInt(900), decimal.NewFromInt(900))
 
 		assert.Equal(t, "0%", detail.ChangePercent())
+
+		detail = notify.NewSymbolDetail("N225", "N225", "Nikkei 225", "JPY",
+			decimal.NewFromInt(900), decimal.NewFromInt(0))
+
+		assert.Equal(t, "0%", detail.ChangePercent())
 	})
 }
 

@@ -23,40 +23,6 @@ type SymbolDetail struct {
 	Currency      *Currency       `bun:"currency"`
 }
 
-func (s *SymbolDetail) Change() string {
-	change := s.MarketPrice.Sub(s.PreviousClose)
-	if change.IsPositive() {
-		return "+" + change.String()
-	}
-	return change.String()
-}
-func (s *SymbolDetail) ChangePercent() string {
-	p := s.MarketPrice.Sub(s.PreviousClose).Div(s.PreviousClose).
-		Mul(decimal.New(100, 0)).Round(2)
-	if p.IsPositive() {
-		return "+" + p.String() + "%"
-	}
-	return p.String() + "%"
-}
-func (s *SymbolDetail) Key() string {
-	return s.Symbol
-}
-
-type SymbolDetailOption func(detail *SymbolDetail) *SymbolDetail
-
-func WithVolume(volume int64) SymbolDetailOption {
-	return func(detail *SymbolDetail) *SymbolDetail {
-		detail.Volume = sql.NullInt64{Int64: volume, Valid: true}
-		return detail
-	}
-}
-func WithMarketCap(marketCap int64) SymbolDetailOption {
-	return func(detail *SymbolDetail) *SymbolDetail {
-		detail.MarketCap = sql.NullInt64{Int64: marketCap, Valid: true}
-		return detail
-	}
-}
-
 func NewSymbolDetail(symbol, shortName, longName, currency string,
 	marketPrice, previousClose decimal.Decimal,
 	options ...SymbolDetailOption) *SymbolDetail {
@@ -76,6 +42,45 @@ func NewSymbolDetail(symbol, shortName, longName, currency string,
 		option(detail)
 	}
 	return detail
+}
+
+func (s *SymbolDetail) Change() string {
+	change := s.MarketPrice.Sub(s.PreviousClose)
+	if change.IsPositive() {
+		return "+" + change.String()
+	}
+	return change.String()
+}
+
+func (s *SymbolDetail) ChangePercent() string {
+	if s.PreviousClose.IsZero() {
+		return "0%"
+	}
+	p := s.MarketPrice.Sub(s.PreviousClose).Div(s.PreviousClose).
+		Mul(decimal.New(100, 0)).Round(2)
+	if p.IsPositive() {
+		return "+" + p.String() + "%"
+	}
+	return p.String() + "%"
+}
+
+func (s *SymbolDetail) Key() string {
+	return s.Symbol
+}
+
+type SymbolDetailOption func(detail *SymbolDetail) *SymbolDetail
+
+func WithVolume(volume int64) SymbolDetailOption {
+	return func(detail *SymbolDetail) *SymbolDetail {
+		detail.Volume = sql.NullInt64{Int64: volume, Valid: true}
+		return detail
+	}
+}
+func WithMarketCap(marketCap int64) SymbolDetailOption {
+	return func(detail *SymbolDetail) *SymbolDetail {
+		detail.MarketCap = sql.NullInt64{Int64: marketCap, Valid: true}
+		return detail
+	}
 }
 
 type SymbolRepository struct {
