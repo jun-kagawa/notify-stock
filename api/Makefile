@@ -6,7 +6,9 @@
 	update-all\
 	gen-local-key\
 	db-connect\
-	run-api-server
+	run-api-server\
+	fmt\
+	test
 
 db-setup:
 	docker compose up -d database
@@ -27,3 +29,8 @@ gqlgen:
 
 run-api-server:
 	go run cmd/main.go server --tls
+
+fmt:
+	go fmt ./...
+test: db-setup
+	go test ./... -count=1
