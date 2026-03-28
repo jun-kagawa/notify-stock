@@ -182,13 +182,12 @@ func parsePreviousClose(res *ChartResponse) (float64, error) {
 		return meta.PreviousClose, nil
 	}
 	adjclose := result[0].Indicators.Adjclose
-	if len(adjclose) == 0 {
-		return meta.ChartPreviousClose, nil
-	}
-	if len(adjclose[0].Adjclose) > 1 {
+	if len(adjclose) != 0 && len(adjclose[0].Adjclose) > 1 {
 		return adjclose[0].Adjclose[len(adjclose[0].Adjclose)-2], nil
 	}
-	return meta.ChartPreviousClose, nil
+
+	logger.Warn("fetch failed previous close", "response", res)
+	return 0, nil
 }
 
 type Option func(URL *url.URL) *url.URL
