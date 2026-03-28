@@ -186,7 +186,7 @@ func parsePreviousClose(res *ChartResponse) (float64, error) {
 		return adjclose[0].Adjclose[len(adjclose[0].Adjclose)-2], nil
 	}
 
-	logger.Warn("failed to determine previous close", "symbol", meta.Symbol)
+	logger.Warn("failed to determine previous close", "symbol", meta.Symbol, "response", res)
 	return 0, nil
 }
 
