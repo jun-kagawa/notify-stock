@@ -1,6 +1,6 @@
 module github.com/heyjun3/notify-stock
 
-go 1.24.1
+go 1.26.1
 
 require (
 	github.com/99designs/gqlgen v0.17.72
@@ -27,7 +27,6 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
-	github.com/google/subcommands v1.2.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
