@@ -30,7 +30,7 @@ var (
 			}
 			end := time.Now()
 			register := notify.InitStockRegister(
-				notify.NewDB(notify.Cfg.DBDSN),
+				notify.NewDB(notify.Cfg.DBDSN, notify.CreateLogger("INFO")),
 				&http.Client{},
 			)
 			if err := register.RegisterStockBySymbols(

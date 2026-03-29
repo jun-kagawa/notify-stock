@@ -79,7 +79,7 @@ func runServer() {
 	logger := notifystock.CreateLogger(notifystock.Cfg.LogLevel)
 	logger.Info("Start set up server")
 
-	db := notifystock.NewDB(notifystock.Cfg.DBDSN)
+	db := notifystock.NewDB(notifystock.Cfg.DBDSN, logger)
 	go func() {
 		logger.Info("Start ping database")
 		for range 10 {

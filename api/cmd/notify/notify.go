@@ -24,7 +24,7 @@ func init() {
 }
 
 func notifyStock(symbols []string) {
-	db := notifyapp.NewDB(notifyapp.Cfg.DBDSN)
+	db := notifyapp.NewDB(notifyapp.Cfg.DBDSN, notifyapp.CreateLogger("INFO"))
 	notifier, err := notifyapp.InitStockNotifier(
 		context.Background(),
 		db,
