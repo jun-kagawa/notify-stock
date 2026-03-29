@@ -12,7 +12,7 @@ import (
 func openDB(t *testing.T) *bun.DB {
 	t.Helper()
 	dsn := "postgres://postgres:postgres@localhost:5555/notify-stock-test?sslmode=disable"
-	db := notify.NewDB(dsn)
+	db := notify.NewDB(dsn, notify.CreateLogger("DEBUG"))
 	for _, table := range []any{
 		(*notify.Stock)(nil),
 		(*notify.Notification)(nil),
