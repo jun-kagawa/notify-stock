@@ -25,13 +25,14 @@ func NewResolver(
 	notificationRepository *notify.NotificationRepository,
 	notificationCreator *notify.NotificationCreator,
 	loader *notify.DataLoader,
+	logger *slog.Logger,
 ) *Resolver {
 	return &Resolver{
 		stockRepository:        stockRepository,
 		symbolRepository:       symbolRepository,
 		notificationRepository: notificationRepository,
 		notificationCreator:    notificationCreator,
-		logger:                 notify.CreateLogger("info"),
+		logger:                 logger,
 		loader:                 loader,
 	}
 }

@@ -8,7 +8,22 @@ import (
 
 var logger *slog.Logger
 
-func CreateLogger(level string) *slog.Logger {
+func CreateLogger(level slog.Level) *slog.Logger {
+	return slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: level,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == "level" {
+				a.Key = "severity"
+			}
+			if a.Key == "msg" {
+				a.Key = "message"
+			}
+			return a
+		},
+	}))
+}
+
+func parseLogLevel(level string) slog.Level {
 	var logLevel slog.Level
 	l := strings.ToUpper(level)
 	switch l {
@@ -21,18 +36,7 @@ func CreateLogger(level string) *slog.Logger {
 	case "ERROR":
 		logLevel = slog.LevelError
 	default:
-		logLevel = slog.LevelInfo
+		logLevel = slog.LevelDebug
 	}
-	return slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level: logLevel,
-		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
-			if a.Key == "level" {
-				a.Key = "severity"
-			}
-			if a.Key == "msg" {
-				a.Key = "message"
-			}
-			return a
-		},
-	}))
+	return logLevel
 }

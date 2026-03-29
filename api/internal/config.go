@@ -96,7 +96,7 @@ func loadConfigFromEnv() (*Config, error) {
 		OauthClientSecret: requiredEnvs["OAUTH_CLIENT_SECRET"],
 		OauthRedirectURL:  requiredEnvs["OAUTH_REDIRECT_URL"],
 		FrontendURL:       requiredEnvs["FRONTEND_URL"],
-		LogLevel:          logLevel,
+		LogLevel:          parseLogLevel(logLevel),
 		Environment:       env,
 	}, nil
 }
@@ -118,7 +118,7 @@ type Config struct {
 	OauthClientSecret string
 	OauthRedirectURL  string
 	FrontendURL       string // フロントエンドのURLを追加
-	LogLevel          string
+	LogLevel          slog.Level
 	Environment       string
 }
 

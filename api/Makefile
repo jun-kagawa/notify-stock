@@ -7,6 +7,7 @@
 	gen-local-key\
 	db-connect\
 	run-api-server\
+	deploy\
 	fmt\
 	test
 
@@ -29,7 +30,8 @@ gqlgen:
 
 run-api-server:
 	go run cmd/main.go server --tls
-
+deploy:
+	docker compose -f compose.prod.yaml up -d --build
 fmt:
 	go fmt ./...
 test: db-setup

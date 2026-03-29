@@ -11,7 +11,7 @@ import (
 	notify "github.com/heyjun3/notify-stock/internal"
 )
 
-func InitResolver(db *bun.DB) *Resolver {
+func InitResolver(db *bun.DB, logger *slog.Logger) *Resolver {
 	wire.Build(
 		notify.InitStockRepository,
 		notify.InitNotificationRepository,

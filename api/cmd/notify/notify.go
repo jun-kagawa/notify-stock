@@ -3,6 +3,7 @@ package notify
 import (
 	"context"
 	"log"
+	"log/slog"
 
 	"github.com/spf13/cobra"
 
@@ -24,7 +25,7 @@ func init() {
 }
 
 func notifyStock(symbols []string) {
-	db := notifyapp.NewDB(notifyapp.Cfg.DBDSN, notifyapp.CreateLogger("INFO"))
+	db := notifyapp.NewDB(notifyapp.Cfg.DBDSN, notifyapp.CreateLogger(slog.LevelDebug))
 	notifier, err := notifyapp.InitStockNotifier(
 		context.Background(),
 		db,

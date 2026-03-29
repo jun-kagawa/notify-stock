@@ -1,6 +1,7 @@
 package update
 
 import (
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -30,7 +31,7 @@ var (
 			}
 			end := time.Now()
 			register := notify.InitStockRegister(
-				notify.NewDB(notify.Cfg.DBDSN, notify.CreateLogger("INFO")),
+				notify.NewDB(notify.Cfg.DBDSN, notify.CreateLogger(slog.LevelDebug)),
 				&http.Client{},
 			)
 			if err := register.RegisterStockBySymbols(

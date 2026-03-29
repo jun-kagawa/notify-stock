@@ -14,13 +14,13 @@ import (
 
 // Injectors from wire.go:
 
-func InitResolver(db *bun.DB) *Resolver {
+func InitResolver(db *bun.DB, logger *slog.Logger) *Resolver {
 	stockRepository := notifystock.InitStockRepository(db)
 	symbolRepository := notifystock.InitSymbolRepository(db)
 	notificationRepository := notifystock.InitNotificationRepository(db)
 	notificationCreator := notifystock.InitNotificationCreator(db)
 	dataLoader := notifystock.NewDataLoader(symbolRepository)
-	resolver := NewResolver(stockRepository, symbolRepository, notificationRepository, notificationCreator, dataLoader)
+	resolver := NewResolver(stockRepository, symbolRepository, notificationRepository, notificationCreator, dataLoader, logger)
 	return resolver
 }
 
