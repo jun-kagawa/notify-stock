@@ -2,6 +2,7 @@ package notifystock_test
 
 import (
 	"context"
+	"log/slog"
 	"testing"
 
 	"github.com/uptrace/bun"
@@ -12,7 +13,7 @@ import (
 func openDB(t *testing.T) *bun.DB {
 	t.Helper()
 	dsn := "postgres://postgres:postgres@localhost:5555/notify-stock-test?sslmode=disable"
-	db := notify.NewDB(dsn, notify.CreateLogger("DEBUG"))
+	db := notify.NewDB(dsn, notify.CreateLogger(slog.LevelDebug))
 	for _, table := range []any{
 		(*notify.Stock)(nil),
 		(*notify.Notification)(nil),

@@ -80,18 +80,7 @@ func runServer() {
 	logger.Info("Start set up server")
 
 	db := notifystock.NewDB(notifystock.Cfg.DBDSN, logger)
-	go func() {
-		logger.Info("Start ping database")
-		for range 10 {
-			if err := db.Ping(); err != nil {
-				logger.Warn("Failed to ping database", "error", err)
-			} else {
-				logger.Info("Success ping database")
-				break
-			}
-		}
-		logger.Info("Done ping database")
-	}()
+
 	sessionRepo := notifystock.NewSessionRepository(db)
 	sessions := notifystock.InitSessionsWithRepo(sessionRepo)
 	authHandler := notifystock.InitAuthHandler(
@@ -105,7 +94,7 @@ func runServer() {
 		},
 	)
 
-	resolver := graph.InitResolver(db)
+	resolver := graph.InitResolver(db, logger)
 	directives := graph.InitRootDirective(logger)
 	c := graph.Config{
 		Resolvers:  resolver,
