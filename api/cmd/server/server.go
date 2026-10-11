@@ -80,6 +80,7 @@ func runServer() {
 	logger.Info("Start set up server")
 
 	db := notifystock.NewDB(notifystock.Cfg.DBDSN, logger)
+	notifystock.DBPing(db, 10, 1)
 
 	sessionRepo := notifystock.NewSessionRepository(db)
 	sessions := notifystock.InitSessionsWithRepo(sessionRepo)
