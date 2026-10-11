@@ -20,3 +20,16 @@ func NewDB(dsn string, logger *slog.Logger) *bun.DB {
 	)
 	return db.WithQueryHook(hook)
 }
+
+func DBPing(db *bun.DB, retryCount int, intervalSec int) {
+	var count int
+	for {
+		err := db.Ping()
+		if err == nil || count >= retryCount {
+			break
+		}
+		count++
+		logger.Warn("failed db connection", "err", err, "count", count)
+		time.Sleep(time.Duration(intervalSec) * time.Second)
+	}
+}
